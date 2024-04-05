@@ -14,6 +14,21 @@ def spider_scan(target):
     response = zap.spider.results(scanID)
     return response
 
+def passive_scan(target):
+    spider_response = spider_scan(target)    
+    for i in range(3):
+        zap.pscan.records_to_scan
+        time.sleep(2)
+    response = zap.core.alerts()
+    total_list = []
+    for i in response:
+        temp = dict()
+        temp["alert"] = i["alert"]
+        temp["risk"] = i["risk"]
+        temp["confidence"] = i["confidence"]
+        total_list.append(temp)
+    unique_dict = {v['alert']:v for v in total_list}.values()
+    return unique_dict
 
 @app.route('/')
 def index():
@@ -26,5 +41,14 @@ def scan_route():
         if(request.form['target']):
             data = {'result': spider_scan(request.form['target'])}
             return jsonify(data)
+    except:
+        return jsonify({})
+
+@app.route('/passive')
+def passive():
+    try:
+        if(request.form['target']):
+            alerts = list(passive_scan(request.form['target']))
+            return jsonify(alerts)
     except:
         return jsonify({})
