@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify, request
-
+import requests
 import time
 from zapv2 import ZAPv2
 
@@ -16,7 +16,7 @@ def spider_scan(target):
 
 def passive_scan(target):
     spider_response = spider_scan(target)    
-    for i in range(3):
+    for i in range(5):
         zap.pscan.records_to_scan
         time.sleep(2)
     response = zap.core.alerts()
@@ -31,7 +31,6 @@ def passive_scan(target):
     return unique_dict
 
 def active_scan(target):
-    scanID = zap.ascan.scan(target)
     while int(zap.ascan.status(scanID)) < 3:
         time.sleep(5)
     response = zap.core.alerts(baseurl=target)
@@ -52,27 +51,24 @@ def index():
 
 @app.route('/spider')
 def scan_route():
-    try:
-        if(request.form['target']):
-            data = {'result': spider_scan(request.form['target'])}
+    if(request.args.get('target')):
+            data = {'result': spider_scan(request.args.get('target'))}
             return jsonify(data)
-    except:
+    else:
         return jsonify({})
 
 @app.route('/passive')
 def passive():
-    try:
-        if(request.form['target']):
-            alerts = list(passive_scan(request.form['target']))
+    if(request.args.get('target')):
+            alerts = list(passive_scan(request.args.get('target')))
             return jsonify(alerts)
-    except:
+    else:
         return jsonify({})
 
 @app.route('/active')
 def active():
-    try:
-        if(request.form['target']):
-            alerts = active_scan(request.form['target'])
-            return jsonify(alerts)
-    except:
+    if(request.args.get('target')):
+        alerts = active_scan(request.args.get('target'))
+        return jsonify(alerts)
+    else:
         return jsonify({})
