@@ -30,6 +30,21 @@ def passive_scan(target):
     unique_dict = {v['alert']:v for v in total_list}.values()
     return unique_dict
 
+def active_scan(target):
+    scanID = zap.ascan.scan(target)
+    while int(zap.ascan.status(scanID)) < 3:
+        time.sleep(5)
+    response = zap.core.alerts(baseurl=target)
+    total_list = []
+    for i in response:
+        temp = dict()
+        temp["alert"] = i["alert"]
+        temp["risk"] = i["risk"]
+        temp["confidence"] = i["confidence"]
+        total_list.append(temp)
+    unique_dict = {v['alert']:v for v in total_list}.values()
+    return unique_dict
+
 @app.route('/')
 def index():
     data = {'data':'hello'}
@@ -49,6 +64,15 @@ def passive():
     try:
         if(request.form['target']):
             alerts = list(passive_scan(request.form['target']))
+            return jsonify(alerts)
+    except:
+        return jsonify({})
+
+@app.route('/active')
+def active():
+    try:
+        if(request.form['target']):
+            alerts = active_scan(request.form['target'])
             return jsonify(alerts)
     except:
         return jsonify({})
