@@ -108,8 +108,10 @@ def passive():
 @app.route('/active')
 def active():
     if(request.args.get('target')):
-        print(request.args.get('target'))
-        alerts = list(active_scan(request.args.get('target')))
-        return jsonify(alerts)
+        # print(request.args.get('target'))
+        # alerts = list(active_scan(request.args.get('target')))
+        # return jsonify(alerts)
+        time.sleep(100)
+        return jsonify({})
     else:
         return jsonify({})
