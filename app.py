@@ -9,7 +9,7 @@ import json
 app = Flask(__name__,static_url_path='/static')
 apiKey = ""
 zap = ZAPv2(apikey=apiKey)
-baseurl="localhost:5000"
+baseurl="3.110.105.48"
 
 def limit_pscan():
     headers = {
@@ -47,7 +47,7 @@ def passive_report(target):
         'Accept' : 'application/html'
     }
     name = generate_random()
-    r = requests.get('http://localhost:8080/JSON/reports/action/generate/', params={'title': 'Vulture Scan Report',  'template': 'traditional-pdf', 'sites': target, 'reportFileName': name, 'reportDir': '/home/cap2k4/Documents/GitHub/vulture_ZAP/static'}, headers = headers)
+    r = requests.get('http://localhost:8080/JSON/reports/action/generate/', params={'title': 'Vulture Scan Report','template': 'traditional-pdf', 'sites': target, 'reportFileName': name, 'reportDir': '/home/ubuntu/vulture_ZAP/static'}, headers = headers)
     print(r.json())
     return name
 
