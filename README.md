@@ -1,4 +1,3 @@
-![logo](https://github.com/VulTURE-HackByte/vulture_ZAP/assets/116958420/b4065acc-847f-42a8-af8d-345d36ce0b9c)
 # ZAP API Backend for VulTURE using Flask
 This project is the API for VulTURE - a web security scanner using ZAP (Zed Attack Proxy) API integrated with Flask, a lightweight web framework in Python. The scanner performs both passive and active scanning on the specified target URL.
 ## Prerequisites
