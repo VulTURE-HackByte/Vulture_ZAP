@@ -110,7 +110,7 @@ def limit_ascan():
 
 def report(target):
     headers = {"Accept": "application/html"}
-    name = generate_random()
+    name = generate_random(10)
     try:
         requests.get(
             "http://localhost:8080/JSON/reports/action/generate/",
@@ -119,7 +119,7 @@ def report(target):
                 "template": "traditional-pdf",
                 "sites": target,
                 "reportFileName": name,
-                "reportDir": "/home/ubuntu/vulture_ZAP/static",
+                "reportDir": "/home/ubuntu/Vulture_ZAP/static",
             },
             headers=headers,
         )
