@@ -19,7 +19,8 @@ def spider():
         target = request.form['target']
         try:
             return jsonify({'result': spider_scan(target)})
-        except: continue
+        except:
+            return jsonify({'message':'No target found'})
     return jsonify({'message':'No target found'})
 
 @app.route('/ajaxspider')
@@ -28,7 +29,8 @@ def ajax_spider():
         target = request.form['target']
         try:
             return jsonify({'result': ajax_spider_scan(target)})
-        except: continue
+        except:
+            return jsonify({'message':'No target found'})
     return jsonify({'message':'No target found'})
 
 @app.route('/passive')
@@ -40,7 +42,8 @@ def passive():
             url = {'url': baseurl+"/static/"+report(target)+".pdf"}
             alerts.append(url)
             return jsonify(alerts)
-        except: continue
+        except:
+            return jsonify({'message':'No target found'})
     return jsonify({'message':'No target found'})
 
 @app.route('/active')
@@ -52,8 +55,19 @@ def active():
             url = {'url': baseurl+"/static/"+report(target)+".pdf"}
             alerts.append(url)
             return jsonify(alerts)
-        except: continue
+        except:
+            return jsonify({'message':'No target found'})
     return jsonify({'message':'No target found'})
+    
+@app.route('/download')
+def download():
+    try:
+        if(request.args.get('id')):
+            path = './static/' + request.args.get('id')
+            return send_file(path, as_attachment=True)
+    except:
+        return jsonify({'message':'No target found'})
+
 
 if __name__ == '__main__':
     app.run()
